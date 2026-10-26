@@ -1,0 +1,15 @@
+name: hermes-gameshelf
+version: "0.1.0"
+description: >
+  Game Shelf for Hermes Agent. One list of games. A person plays, or they
+  agree before an AI takes a seat. Another plugin joins by shipping game.json.
+manifest_version: 2
+api_version: 1
+license: MIT
+tags: [game]
+config_schema:
+  allow_ai:
+    type: bool
+    default: true
+    label: Allow AI seats
+    description: Off means no game may seat an AI. On still requires a person to agree before an AI faces a human.

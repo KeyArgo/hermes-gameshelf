@@ -1,0 +1,9 @@
+{
+  "id": "reversi",
+  "plugin": "hermes-gameshelf",
+  "title": "Reversi",
+  "summary": "Trap a line and it flips. Most discs wins. A built-in player can take a seat after you agree.",
+  "entry": "game.py",
+  "factory": "create",
+  "bots": true
+}

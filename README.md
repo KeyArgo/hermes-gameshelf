@@ -1,25 +1,26 @@
 # hermes-gameshelf
 
-Game Shelf for **Hermes Agent**. Version **0.1.0**. This is not a Hermes BBS door.
+Public release **0.1.1**.
 
 ```bash
 hermes plugins install KeyArgo/hermes-gameshelf --enable
 ```
 
-Development snapshots live in the private repo `KeyArgo/hermes-gameshelf-dev` (`0.1.0-dev`).
+Development snapshots: private `KeyArgo/hermes-gameshelf-dev`.
 
-One shelf for games that run inside **Hermes Agent**.
+Game Shelf for **Hermes Agent**. This is not a Hermes BBS door.
 
-`/games` lists every title. Games are rows on that list. They do not add their own slash commands. Every game here is worth playing twice: once against another person, and once against a bot when nobody is free.
+Installing this plugin ships Connect Four, Kalah, Reversi, Gomoku, and Checkers. `/games` lists them. Chess and Luanti show up as extra plugins you can enable. Games do not add their own slash commands.
 
-| Game | Plugin | Who can sit down |
+| Game | Comes with the shelf | Who can sit down |
 |---|---|---|
-| Chess | `agent-arena` (GPL-3) | People. A Hermes profile after you agree. |
-| Connect Four | `classic-games` | People, a bot account, or the built-in player after you agree. |
-| Kalah | `classic-games` | Same. |
-| Reversi | `classic-games` | Same. |
-| Gomoku | `classic-games` | Same. |
-| Checkers | `classic-games` | Same. |
+| Connect Four | Yes | People, a bot account, or the built-in player after you agree. |
+| Kalah | Yes | Same. |
+| Reversi | Yes | Same. |
+| Gomoku | Yes | Same. |
+| Checkers | Yes | Same. |
+| Chess | Enable `agent-arena` (GPL-3) | People. A Hermes profile after you agree. |
+| Luanti | Enable `luanti` | Shared voxel worlds. |
 
 Tic-tac-toe and Minesweeper still play by id (`/games tictactoe new`). They are not on the list.
 

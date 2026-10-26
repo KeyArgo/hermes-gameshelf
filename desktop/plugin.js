@@ -183,6 +183,19 @@ function GameShelfPage({ ctx }) {
           },
           item.id
         )
+      ),
+      ...(view.more || []).map(item =>
+        jsxs(
+          'div',
+          {
+            style: { padding: '10px 14px', color: text.tertiary, fontSize: 12 },
+            children: [
+              jsx('div', { style: { fontWeight: 600, color: text.secondary }, children: item.title }),
+              jsx('div', { children: `Not installed. Enable plugin ${item.plugin}.` })
+            ]
+          },
+          item.id
+        )
       )
     ]
   })

@@ -1,0 +1,9 @@
+{
+  "id": "kalah",
+  "plugin": "hermes-gameshelf",
+  "title": "Kalah",
+  "summary": "Sow seeds, steal pits, about two minutes a game. A built-in player can take a seat after you agree.",
+  "entry": "game.py",
+  "factory": "create",
+  "bots": true
+}

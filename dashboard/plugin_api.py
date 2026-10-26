@@ -78,13 +78,25 @@ def view() -> dict:
             "title": manifest["title"],
             "summary": manifest.get("summary", ""),
             "bots": bool(manifest.get("bots")),
+            "installed": True,
         }
         for manifest in catalog.listed()
+    ]
+    more = [
+        {
+            "id": extra["id"],
+            "title": extra["title"],
+            "summary": extra["summary"],
+            "plugin": extra["plugin"],
+            "installed": False,
+        }
+        for extra in catalog.missing_extras()
     ]
     return {
         "player": {"name": player.name, "named": player.named},
         "allow_ai": bool(catalog.settings.get("allow_ai", True)),
         "games": games,
+        "more": more,
         "lobby": snapshot(catalog.data_root),
     }
 

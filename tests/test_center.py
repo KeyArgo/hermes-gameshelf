@@ -73,7 +73,9 @@ def test_disabled_plugin_stays_off_the_shelf(tmp_path: Path) -> None:
         {"allow_ai": True},
         enabled=lambda name: name != "agent-arena",
     )
-    assert "chess:" not in catalog.list_text()
+    listed = catalog.list_text()
+    assert all(not line.startswith("chess:") for line in listed.splitlines())
+    assert "Enable plugin agent-arena" in listed
 
 
 def test_loads_the_way_hermes_loads_a_plugin(tmp_path: Path) -> None:
@@ -239,6 +241,8 @@ def test_desktop_backend_runs_lines_as_the_person_at_the_desktop(tmp_path: Path,
     assert "connect4" in ids and "checkers" in ids
     assert "chess" not in ids
     assert "tictactoe" not in ids
+    more = {item["id"]: item["plugin"] for item in view["more"]}
+    assert more["chess"] == "agent-arena"
     assert view["player"]["named"] is False
     assert "name" in api.command({"line": "chat say hi"})["text"].lower()
     assert "Argo" in api.command({"line": "/games name Argo"})["text"]
@@ -251,6 +255,18 @@ def test_desktop_backend_runs_lines_as_the_person_at_the_desktop(tmp_path: Path,
     after = api.view()
     assert after["player"] == {"name": "Argo", "named": True}
     assert after["lobby"]["lines"][-1] == {"id": "local", "name": "Argo", "text": "hi"}
+
+
+def test_shelf_ships_default_games_and_names_the_ones_you_can_install(tmp_path: Path) -> None:
+    catalog = Catalog([ROOT], tmp_path / "data", {"allow_ai": True}, enabled=lambda name: name == "hermes-gameshelf")
+    listed = catalog.list_text()
+    for game_id in ("connect4", "kalah", "reversi", "gomoku", "checkers"):
+        assert f"{game_id}:" in listed
+    assert all(not line.startswith("chess:") for line in listed.splitlines())
+    assert "Enable plugin agent-arena" in listed
+    assert "Enable plugin luanti" in listed
+    assert "White to move." in run(catalog, "connect4 new", source="command")
+    assert "tictactoe:" not in listed
 
 
 def test_two_discord_players_cannot_take_each_others_turn(tmp_path: Path) -> None:

@@ -13,6 +13,22 @@ from .fair import blocked
 
 _ID = re.compile(r"[a-z0-9][a-z0-9-]{0,31}")
 
+# Games the shelf knows about but does not ship (GPL, extra servers, etc.).
+EXTRAS = (
+    {
+        "id": "chess",
+        "title": "Chess",
+        "plugin": "agent-arena",
+        "summary": "Turn-based chess. People, or a Hermes profile after you agree.",
+    },
+    {
+        "id": "luanti",
+        "title": "Luanti",
+        "plugin": "luanti",
+        "summary": "Shared voxel worlds.",
+    },
+)
+
 
 def _call(command, raw: str, *, source: str, complete, player) -> str:
     params = inspect.signature(command).parameters
@@ -77,17 +93,32 @@ class Catalog:
                     self._manifests.append((manifest_path.parent, manifest))
 
     def list_text(self) -> str:
-        if not self._manifests:
-            return "No games yet. A plugin joins by adding game.json next to its plugin."
+        listed = self.listed()
         lines = ["Game Shelf"]
-        for manifest in self.listed():
-            line = f"{manifest['id']}: {manifest['title']} — {manifest.get('summary', '')}".rstrip()
-            if manifest.get("bots"):
-                line += " Bots can play."
-            lines.append(line)
-        lines.append("Play: /games connect4 new")
+        if listed:
+            for manifest in listed:
+                line = f"{manifest['id']}: {manifest['title']} — {manifest.get('summary', '')}".rstrip()
+                if manifest.get("bots"):
+                    line += " Bots can play."
+                lines.append(line)
+            first = listed[0]["id"]
+            lines.append(f"Play: /games {first} new")
+        else:
+            lines.append("No games on this shelf yet. Defaults ship with hermes-gameshelf.")
+        extras = self.missing_extras()
+        if extras:
+            lines.append("Install more:")
+            for extra in extras:
+                lines.append(
+                    f"  {extra['id']}: {extra['title']} — {extra['summary']} "
+                    f"Enable plugin {extra['plugin']}."
+                )
         lines.append("Find people: /games chat say anyone for reversi?  /games looking reversi")
         return "\n".join(lines)
+
+    def missing_extras(self) -> list[dict[str, str]]:
+        have = {manifest["id"] for _directory, manifest in self._manifests}
+        return [dict(extra) for extra in EXTRAS if extra["id"] not in have]
 
     def listed(self) -> list[dict[str, Any]]:
         """Games shown on /games. A game.json with "listed": false still plays by id."""

@@ -1,8 +1,9 @@
 name: hermes-gameshelf
-version: "0.1.0"
+version: "0.1.1"
 description: >
-  Game Shelf for Hermes Agent. One list of games. A person plays, or they
-  agree before an AI takes a seat. Another plugin joins by shipping game.json.
+  Game Shelf for Hermes Agent. Ships Connect Four, Kalah, Reversi, Gomoku,
+  and Checkers. A person plays, or they agree before an AI takes a seat.
+  Another plugin joins by shipping game.json.
 manifest_version: 2
 api_version: 1
 license: MIT
